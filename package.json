@@ -1,0 +1,19 @@
+{
+  "name": "employee-tracker-bc",
+  "version": "0.0.1",
+  "description": "This is a command-line based employee management system.",
+  "main": "server/src/main.ts",
+  "type": "module",
+  "devDependencies": {
+    "pg": "^8.13.1",
+    "colors": "^1.4.0",
+    "inquirer": "^12.3.0",
+    "typescript": "^5.7.2"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "ArtOfTheNiles",
+  "license": "MIT"
+}
