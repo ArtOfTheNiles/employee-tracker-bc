@@ -5,7 +5,7 @@ import openPrompt from './prompts/openPrompt.js';
 
 async function main() {
     console.log(welcomeHeader);
-    const openAnswer = await openPrompt;
+    const openAnswer = await openPrompt();
     console.log('This is what we are looking at: '+openAnswer);
 
 }
