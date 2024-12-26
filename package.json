@@ -19,5 +19,8 @@
   "homepage": "https://github.com/ArtOfTheNiles/employee-tracker-bc",
   "keywords": [],
   "author": "ArtOfTheNiles",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "@types/node": "^22.10.2"
+  }
 }

@@ -1,66 +1,91 @@
 interface link {
-    text: string;
-    destination: string;
+    text: string; // How to refer to collective service via interface
+    service_prompt: string; // inquirer.js prompts
+    service_db: string; // database interaction services
 }
 
 export const serviceList:link[] = [
     {
         text:'View All Departments', 
-        destination: '../service/viewDepartments.ts'
+        service_prompt: '',
+        service_db: '../service/viewDepartments.ts'
     },{
         text:'View All Roles', 
-        destination:'../service/viewRoles.ts'
+        service_prompt: '',
+        service_db:'../service/viewRoles.ts'
     },{
         text:'View All Employees', 
-        destination:'../service/viewEmployees.ts'
+        service_prompt: '',
+        service_db:'../service/viewEmployees.ts'
     },{
-        text:'Add a Department', 
-        destination:'../service/addDepartment.ts'
+        text:'Add a Department',
+        service_prompt: '', 
+        service_db:'../service/addDepartment.ts'
     },{
         text:'Add a Role', 
-        destination:'../service/addRole.ts'
+        service_prompt: '',
+        service_db:'../service/addRole.ts'
     },{
         text:'Add an Employee', 
-        destination:'../service/addEmployee.ts'
+        service_prompt: '',
+        service_db:'../service/addEmployee.ts'
     },{
         text:'Update an Employee Role', 
-        destination:'../service/updateEmployee.ts'
+        service_prompt: '',
+        service_db:'../service/updateEmployee.ts'
     }
-    /*Extended Options 
+    // /*Extended Options 
     ,{
         text:'View Employees by Manager', 
-        destination:'../service/extended/viewEmployeesByManager.ts'
+        service_prompt: '',
+        service_db:'../service/extended/viewEmployeesByManager.ts'
     },{
         text:'View Employees by Department', 
-        destination:'../service/extended/viewEmployeesByDepartment.ts'
+        service_prompt: '',
+        service_db:'../service/extended/viewEmployeesByDepartment.ts'
     },{
         text:'View a Department Budget', 
-        destination:'../service/extended/viewDepartmentBudget.ts'
+        service_prompt: '',
+        service_db:'../service/extended/viewDepartmentBudget.ts'
     },{
         text:'Update an Employee Manager', 
-        destination:'../service/extended/updateEmployeeManager.ts'
+        service_prompt: '',
+        service_db:'../service/extended/updateEmployeeManager.ts'
     },{
         text:'Delete a Role', 
-        destination:'../service/extended/deleteRole.ts'
+        service_prompt: '',
+        service_db:'../service/extended/deleteRole.ts'
     },{
         text:'Delete a Department', 
-        destination:'../service/extended/deleteDepartment.ts'
+        service_prompt: '',
+        service_db:'../service/extended/deleteDepartment.ts'
     },{
         text:'Delete an Employee Entry', 
-        destination:'../service/extended/deleteEmployee.ts'
+        service_prompt: '',
+        service_db:'../service/extended/deleteEmployee.ts'
     }
-    */
+    // */
 ];
 
 export async function useService(serviceName: string) {
-    const foundLink = serviceList.find(service => service.text === serviceName);
+    const foundLink = serviceList.find(service => service.service_db === serviceName);
     if(foundLink){
-        const module = await import(foundLink.destination);
+        const module = await import(foundLink.service_db);
         if(module.execute){
             module.execute();
         }
     }else{
         console.error(`${serviceName} service not found!`)
+    }
+}
+
+export async function summonPrompt(servicePrompt: string) {
+    const foundLink = serviceList.find(service => service.service_prompt === servicePrompt);
+    if(foundLink){
+        const module = await import(foundLink.service_prompt);
+        // TODO connect!
+    }else{
+        console.error(`${servicePrompt} inquirer prompt not found!`)
     }
 }
 
