@@ -1,4 +1,4 @@
-import inquirer, { Question } from "inquirer"; 
+import inquirer from "inquirer"; 
 import colors from "colors";
 
 import { validateVarchar30, validateFloatingPoint } from "./promptValidation.js";
@@ -26,7 +26,7 @@ export default class CLI {
 
     if(userValidated){
       // TODO: Add Department To Database
-      tempTelemetry;
+      tempTelemetry();
       console.log(colors.green('Department Added Successfully!'));
     }
   };
@@ -62,7 +62,7 @@ export default class CLI {
 
     if(userValidated) {
       // TODO: Add Role To Database
-      tempTelemetry;
+      tempTelemetry();
       console.log(colors.green('Role Added Successfully!'));
     };
   };
@@ -106,7 +106,7 @@ export default class CLI {
 
     if(userValidated){
       // TODO: Add Employee To Database
-      tempTelemetry;
+      tempTelemetry();
       console.log(colors.green('Department Added Successfully!'));
     }
   };
@@ -124,6 +124,7 @@ export default class CLI {
 
     //TODO: figure out how to make the query in psql
     console.log(colors.rainbow(`Lookin' up budget info on ${title}`));
+    //BUG: program crashes here
   };
 
   //#region Update Functions

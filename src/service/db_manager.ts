@@ -1,3 +1,5 @@
+import colors from "colors";
+
 export interface IDepartment { 
     id: string, 
     name: string 
@@ -89,23 +91,23 @@ export default class db_manager {
 
     // #region Displays
     public async viewEmployees():Promise<void>{
-        console.log(`Database Information on Employees`);
+        console.log(`Database Information on `+colors.rainbow(`Employees`));
     };
     public async viewDepartments():Promise<void>{
-        console.log(`Database Information on Departments`);
+        console.log(`Database Information on `+colors.rainbow(`Departments`));
     };
     public async viewRoles():Promise<void>{
-        console.log(`Database Information on Roles`);
+        console.log(`Database Information on `+colors.rainbow(`Roles`));
     };
 
     public async viewEmployeesByManager():Promise<void>{
-        console.log(`Database Information on Employees by Manager`);
+        console.log(`Database Information on `+colors.rainbow(`Employees by Manager`));
     };
     public async viewEmployeesByDepartment():Promise<void>{
-        console.log(`Database Information on Employees by Department`);
+        console.log(`Database Information on `+colors.rainbow(`Employees by Department`));
     };
     public async viewDepartmentBudget(input: string):Promise<void>{
-        console.log(`Database Information on ${input}'s budget`);
+        console.log(`Database Information on `+colors.rainbow(`${input}'s budget`));
     };
     //#endregion
 };

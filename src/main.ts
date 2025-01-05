@@ -1,8 +1,8 @@
 import fs from 'node:fs';
 import inquirer from 'inquirer';
 
-import welcomeHeader from './prompts/welcomeHeader.js';
 import serviceSelector from './prompts/serviceSelector.js';
+import { welcomeHeader } from './prompts/inserts.js';
 
 async function main() {
     console.log(welcomeHeader);
