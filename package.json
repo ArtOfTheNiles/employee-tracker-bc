@@ -5,6 +5,7 @@
   "main": "server/src/main.ts",
   "type": "module",
   "devDependencies": {
+    "@types/pg": "^8.11.10",
     "colors": "^1.4.0",
     "env-var": "^7.5.0",
     "inquirer": "^12.3.0",

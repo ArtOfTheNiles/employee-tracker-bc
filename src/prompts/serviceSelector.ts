@@ -99,6 +99,7 @@ export async function serviceSelector (): Promise<void> {
     if(shouldContinue){ 
         serviceSelector(); 
     }else{
+        dbManager.closeConnection();
         console.log(goodbyePrompt);
     }
 }

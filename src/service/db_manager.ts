@@ -1,4 +1,7 @@
 import colors from "colors";
+import { Client } from 'pg';
+const client = new Client();
+await client.connect();
 
 export interface IDepartment { 
     id: string, 
@@ -21,6 +24,7 @@ export interface IEmployee {
 };
 
 export default class db_manager {
+    public async closeConnection(): Promise<void> {  await client.end();  };
     // #region Getters
     // TODO: These functions should get database information to populate inquirer choices
     public async getEmployees(): Promise<IEmployee[]> {
