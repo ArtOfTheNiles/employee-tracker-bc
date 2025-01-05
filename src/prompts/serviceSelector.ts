@@ -3,7 +3,7 @@ import colors from "colors";
 
 import db_manager from "../service/db_manager.js";
 import CLI from "./cli.js";
-import { comingSoon, continuePrompt, goodbyePrompt } from "./inserts.js";
+import { comingSoon, continuePrompt, goodbyePrompt, serviceSeparator } from "./inserts.js";
 
 const serviceChoices = [
     // Views
@@ -97,9 +97,10 @@ export async function serviceSelector (): Promise<void> {
     });
 
     if(shouldContinue){ 
+        console.log(serviceSeparator);
         serviceSelector(); 
     }else{
-        dbManager.closeConnection();
+        dbManager.disconnect();
         console.log(goodbyePrompt);
     }
 }

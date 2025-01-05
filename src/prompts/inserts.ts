@@ -24,6 +24,14 @@ const goodbyeText = [
 ]
 export const goodbyePrompt = goodbyeText.join('');
 
+// Line beautification:
+export const lb_plain = '\n';
+export const lb_comma = ',\n';
+export const starter = colors.gray('\n    ------');
+export const separator = colors.gray('    - - - - - - - - - - -');
+export const serviceSeparator = colors.green('\n⁘⁘⁘  - - - - - - - - - - -');
+export const terminator = colors.gray('    ------\n');
+
 export const comingSoon = ():void => {
     console.log(colors.bgRed('FUNCTION IMPLEMENTATION INCOMING...'));
 };

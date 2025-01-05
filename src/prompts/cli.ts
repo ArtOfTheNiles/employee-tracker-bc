@@ -2,7 +2,7 @@ import inquirer from "inquirer";
 import colors from "colors";
 
 import { validateVarchar30, validateFloatingPoint } from "./promptValidation.js";
-import db_manager, { IDepartment, IRole, IEmployee } from "../service/db_manager.js";
+import db_manager from "../service/db_manager.js";
 import { tempTelemetry } from "./inserts.js";
 
 
@@ -46,7 +46,7 @@ export default class CLI {
       validate: validateFloatingPoint,
     });
 
-    const departmentNames: string [] = (await this.dbManager.getDepartments()).map(dept => dept.name);
+    const departmentNames: string [] = (await this.dbManager.getDepartments());
     const { department } = await inquirer.prompt({
       type: "list",
       name: "department",
@@ -82,7 +82,7 @@ export default class CLI {
       validate: validateVarchar30,
     });
 
-    const roleNames: string[] = (await this.dbManager.getRoles()).map(role => role.title);
+    const roleNames: string[] = (await this.dbManager.getRoles());
     const { role } = await inquirer.prompt({
       type: "list",
       name: "role",
@@ -90,7 +90,7 @@ export default class CLI {
       choices: roleNames, 
     });
 
-    const managerNames: string[] = (await this.dbManager.getEmployees()).map(employee => `${employee.first_name} ${employee.last_name}`)
+    const managerNames: string[] = (await this.dbManager.getEmployees())
     const { manager } = await inquirer.prompt({
       type: "list",
       name: "manager",
@@ -114,7 +114,7 @@ export default class CLI {
 
   public async viewDepartmentBudget(): Promise<void> {
 
-    const departmentNames: string [] = (await this.dbManager.getDepartments()).map(dept => dept.name);
+    const departmentNames: string [] = (await this.dbManager.getDepartments());
     const { title } = await inquirer.prompt({
       type: "list",
       name: "title",
