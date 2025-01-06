@@ -1,9 +1,11 @@
 import inquirer from "inquirer";
 import colors from "colors";
 
-import db_manager from "../service/db_manager.js";
 import CLI from "./cli.js";
-import { comingSoon, continuePrompt, goodbyePrompt, serviceSeparator } from "./inserts.js";
+import { continuePrompt, goodbyePrompt, serviceSeparator } from "./inserts.js";
+import delay from "../service/utilities.js";
+
+const cli = new CLI();
 
 const serviceChoices = [
     // Views
@@ -25,37 +27,25 @@ const serviceChoices = [
     'Delete an Employee-Entry', 
 ];
 
-export async function serviceSelector (): Promise<void> {
-
-    const dbManager = new db_manager();
-    const cli = new CLI();
-
-    const { output } = await inquirer.prompt({
-        type: 'list',
-        name: 'output',
-        message: colors.blue('What would you like to do?'),
-        choices: serviceChoices,
-        default: serviceChoices[0],
-    })
-
-    switch (output) {
+async function serviceSwitch(service: string){
+    switch (service) {
         // Views
         case 'View All Departments':
-            await dbManager.viewDepartments();
+            await cli.viewDepartments();
             break;
         case 'View All Roles':
-            await dbManager.viewRoles();
+            await cli.viewRoles();
             break;
         case 'View All Employees':
-            await dbManager.viewEmployees();
+            await cli.viewEmployees();
             break;
-        case 'View Employees by Manager': // EXT
-            await dbManager.viewEmployeesByManager();
+        case 'View Employees by Manager':
+            await cli.viewEmployeesByManager();
             break;
-        case 'View Employees by Department': // EXT
-            await dbManager.viewEmployeesByDepartment();
+        case 'View Employees by Department':
+            await cli.viewEmployeesByDepartment();
             break;
-        case 'View a Department Budget': // EXT
+        case 'View a Department Budget':
             await cli.viewDepartmentBudget();
             break;
         // Setters
@@ -69,27 +59,30 @@ export async function serviceSelector (): Promise<void> {
             await cli.addEmployee();
             break;
         case 'Update an Employee Role':
-            comingSoon();
+            await cli.updateEmployeeRole();
             break;
-        case 'Update an Employee Manager': // EXT
-            comingSoon();
+        case 'Update an Employee Manager':
+            await cli.updateEmployeeManager();
             break;
         // Deleters (Extended)
         case 'Delete a Role': 
-            comingSoon();
+            await cli.deleteRole();
             break;
         case 'Delete a Department': 
-            comingSoon();
+            await cli.deleteDepartment();
             break;
         case 'Delete an Employee-Entry': 
-            comingSoon();
+            await cli.deleteEmployee();
             break;
     
         default:
             console.error('No such function, how did you get here?');
             break;
     };
+};
 
+async function shouldContinue(){
+    await delay(300);
     const { shouldContinue } = await inquirer.prompt({
         type: 'confirm',
         name: 'shouldContinue',
@@ -98,11 +91,26 @@ export async function serviceSelector (): Promise<void> {
 
     if(shouldContinue){ 
         console.log(serviceSeparator);
-        serviceSelector(); 
+        await serviceSelector(); 
     }else{
-        dbManager.disconnect();
         console.log(goodbyePrompt);
     }
-}
+};
+
+export async function serviceSelector (): Promise<void> {
+
+    const { output } = await inquirer.prompt({
+        type: 'list',
+        name: 'output',
+        message: colors.blue('What would you like to do?'),
+        choices: serviceChoices,
+        default: serviceChoices[0],
+    })
+
+    await serviceSwitch(output);
+
+
+    await shouldContinue();
+};
 
 export default serviceSelector;

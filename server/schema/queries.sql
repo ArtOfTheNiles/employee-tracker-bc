@@ -17,3 +17,7 @@ LEFT JOIN employee ON employee.manager_id = employee.manager_id
 SELECT title department_id
 FROM role
 LEFT JOIN department ON role.department_id = department.
+
+-- Emps by Dept --
+SELECT name FROM department
+LEFT JOIN employee ON 

@@ -3,7 +3,6 @@ import colors from "colors";
 
 import { validateVarchar30, validateFloatingPoint } from "./promptValidation.js";
 import db_manager from "../service/db_manager.js";
-import { tempTelemetry } from "./inserts.js";
 
 
 export default class CLI {
@@ -25,9 +24,7 @@ export default class CLI {
     });
 
     if(userValidated){
-      // TODO: Add Department To Database
-      tempTelemetry();
-      console.log(colors.green('Department Added Successfully!'));
+      this.dbManager.addDepartment(title);
     }
   };
 
@@ -61,9 +58,7 @@ export default class CLI {
     });
 
     if(userValidated) {
-      // TODO: Add Role To Database
-      tempTelemetry();
-      console.log(colors.green('Role Added Successfully!'));
+      this.dbManager.addRole(title, salary, department);
     };
   };
 
@@ -90,12 +85,13 @@ export default class CLI {
       choices: roleNames, 
     });
 
-    const managerNames: string[] = (await this.dbManager.getEmployees())
+    const managerNames: string[] = ['None', ...(await this.dbManager.getEmployees())]
     const { manager } = await inquirer.prompt({
       type: "list",
       name: "manager",
       message: `What is ${firstName} ${lastName}'s direct manager?`,
       choices: managerNames,
+      default: 'None',
     });
 
     const { userValidated } = await inquirer.prompt({ 
@@ -105,9 +101,7 @@ export default class CLI {
     });
 
     if(userValidated){
-      // TODO: Add Employee To Database
-      tempTelemetry();
-      console.log(colors.green('Department Added Successfully!'));
+      this.dbManager.addEmployee(firstName, lastName, role, manager);
     }
   };
   //#endregion
@@ -124,13 +118,47 @@ export default class CLI {
 
     //TODO: figure out how to make the query in psql
     console.log(colors.rainbow(`Lookin' up budget info on ${title}`));
-    //BUG: program crashes here
   };
 
-  //#region Update Functions
+  //#region View Functions (Passthrough)
+  public async viewDepartments(): Promise<void> {
+    this.dbManager.viewDepartments();
+  }
+  public async viewRoles(): Promise<void> {
+    this.dbManager.viewRoles();
+  }  
+  public async viewEmployees(): Promise<void> {
+    this.dbManager.viewEmployees();
+  }
+  public async viewEmployeesByManager(): Promise<void> {
+    this.dbManager.viewEmployeesByManager();
+  }
+  public async viewEmployeesByDepartment(): Promise<void> {
+    this.dbManager.viewEmployeesByDepartment();
+  }
   //#endregion
 
+
+  //#region Update Functions
+  public async updateEmployeeRole(): Promise<void> {
+
+  }
+  public async updateEmployeeManager(): Promise<void> {
+    
+  }
+  //#endregion
+
+
   //#region Delete Functions
+  public async deleteEmployee(): Promise<void> {
+
+  }
+  public async deleteDepartment(): Promise<void> {
+    
+  }
+  public async deleteRole(): Promise<void> {
+
+  }
   //#endregion
 }
 
