@@ -46,7 +46,7 @@ async function serviceSwitch(service: string){
             await cli.viewEmployeesByDepartment();
             break;
         case 'View a Department Budget':
-            await cli.viewDepartmentBudget();
+            await cli.viewDepartmentBudgets();
             break;
         // Setters
         case 'Add a Department':

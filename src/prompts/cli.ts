@@ -106,21 +106,11 @@ export default class CLI {
   };
   //#endregion
 
-  public async viewDepartmentBudget(): Promise<void> {
-
-    const departmentNames: string [] = (await this.dbManager.getDepartments());
-    const { title } = await inquirer.prompt({
-      type: "list",
-      name: "title",
-      message: "Which Department Budget do you want to view?",
-      choices: departmentNames,
-    });
-
-    //TODO: figure out how to make the query in psql
-    console.log(colors.rainbow(`Lookin' up budget info on ${title}`));
-  };
 
   //#region View Functions (Passthrough)
+  public async viewDepartmentBudgets(): Promise<void> {
+    this.dbManager.viewDepartmentBudgets();
+  };
   public async viewDepartments(): Promise<void> {
     this.dbManager.viewDepartments();
   }

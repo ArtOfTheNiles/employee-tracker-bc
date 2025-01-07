@@ -1,7 +1,7 @@
 import colors from "colors";
 import pg from 'pg';
 import dotenv from 'dotenv';
-import { terminator, starter, lb_plain } from "../prompts/inserts.js";
+import { terminator, starter, lb_plain, comingSoon } from "../prompts/inserts.js";
 
 dotenv.config();
 //TODO: Switch to POOL
@@ -21,9 +21,8 @@ export default class db_manager {
         console.log(`Database Information on `+colors.yellow(`Departments:`));
         console.log(starter);
         try {
-            const result = await pool.query('SELECT * FROM department');
-            console.log(result.rows.map(row =>
-                `${row.id.toString().padStart(4, ' ')}: ${row.name.toString().padEnd(36, ' ')}`
+            console.table((await pool.query('SELECT name FROM department ORDER BY name')).rows.map(row =>
+                `    ${row.name.padEnd(36, ' ')}`
             ).join(lb_plain));
         } catch (error) {
             console.error(error);
@@ -36,7 +35,7 @@ export default class db_manager {
         console.log(`Database Information on `+colors.yellow(`Roles:`));
         console.log(starter);
         try {
-            console.log((await pool.query('SELECT title FROM role')).rows.map(row =>
+            console.table((await pool.query('SELECT title FROM role ORDER BY title')).rows.map(row =>
                 `    ${row.title.toString().padEnd(36, ' ')}`
             ).join(lb_plain));
         } catch (error) {
@@ -50,7 +49,7 @@ export default class db_manager {
         console.log(`Database Information on `+colors.yellow(`Employees:`));
         console.log(starter);
         try {
-            console.log((await pool.query('SELECT * FROM employee')).rows.map(row =>
+            console.table((await pool.query('SELECT last_name, first_name FROM employee ORDER BY last_name')).rows.map(row =>
                 `    ${row.last_name}, ${row.first_name}  `
             ).join(lb_plain));
         } catch (error) {
@@ -65,7 +64,10 @@ export default class db_manager {
         console.log(starter);
         try {
             // console.log(comingSoon);
-            console.log(await pool.query(''));
+            console.table((await pool.query(`SELECT m.last_name AS man_last_name, m.first_name AS man_first_name, e.last_name AS emp_last_name, e.first_name AS emp_first_name FROM employee AS e INNER JOIN employee AS m ON e.manager_id = m.id ORDER BY man_last_name`)).rows.map((row) => {
+                const employeeText = (row.emp_last_name + row.emp_first_name).padEnd(20, ' ');
+                `    ${employeeText}; reports to ${row.man_last_name}, ${row.man_first_name}`
+        }).join(lb_plain));
         } catch (error) {
             console.error(error);
         }
@@ -77,21 +79,22 @@ export default class db_manager {
         console.log(`Database Information on `+colors.yellow(`Employees by Department:`));
         console.log(starter);
         try {
-            // console.log(comingSoon);
-            console.log(await pool.query(''));
+            console.table((await pool.query(`SELECT department.name AS department, e.last_name, e.first_name FROM employee AS e LEFT JOIN role ON (e.role_id = role.id) LEFT JOIN department ON (role.department_id = department.id) ORDER BY department.name, e.last_name`)).rows.map(row =>
+                `    ${row.department.padEnd(36, '.')}  ${row.last_name}, ${row.first_name}`
+            ).join(lb_plain));
         } catch (error) {
             console.error(error);
         }
         console.log(terminator);
     };
-    public async viewDepartmentBudget(input: string):Promise<void>{
+    public async viewDepartmentBudgets():Promise<void>{
         await pool.connect();
         
-        console.log(`Database Information on `+colors.yellow(`${input}'s Budget:`));
         console.log(starter);
         try {
-            // console.log(comingSoon);
-            console.log(await pool.query(''));
+            console.table((await pool.query(`SELECT department.name AS department, COALESCE(SUM(salary),0) AS budget FROM department FULL JOIN role ON (role.department_id = department.id) FULL JOIN employee ON (employee.role_id = role.id) GROUP BY department ORDER BY budget DESC`)).rows.map(row =>
+                `    ${row.department.padEnd(36, '.')}${row.budget.padEnd(12, ' ')}`
+            ).join(lb_plain));
         } catch (error) {
             console.error(error);
         }
